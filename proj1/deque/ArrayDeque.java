@@ -41,7 +41,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         items[nextFirst] = item;
         first = nextFirst;
         size += 1;
-        nextFirst = (nextFirst - 1) % size;
+        nextFirst = ((nextFirst - 1) % size + size) % size;
     }
 
     public void addLast(T item) {
@@ -80,7 +80,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         T returnItem = items[last];
         items[last] = null;
         size -= 1;
-        last = (last - 1) % size;
+        last = ((last - 1) % size + size) % size;
         return returnItem;
     }
 
