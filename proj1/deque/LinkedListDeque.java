@@ -128,7 +128,8 @@ public class LinkedListDeque<T> implements Iterable<T> {
     public boolean equals(Object o) {
         if (this == o) { return true; }
 
-        if (o instanceof LinkedListDeque lld) {
+        if (o instanceof LinkedListDeque) {
+            LinkedListDeque lld = (LinkedListDeque) o;
             if (size != lld.size()) { return false; }
             for (int i = 0; i < size; i++) {
                 if (get(i) != lld.get(i)) {
