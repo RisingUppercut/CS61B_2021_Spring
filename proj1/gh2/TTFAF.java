@@ -17,14 +17,15 @@ public class TTFAF {
         try {
             InputStream source = new ByteArrayInputStream(Base64.getDecoder().decode(TTFAF));
             source = new GZIPInputStream(source);
-            GuitarPlayer player = new GuitarPlayer(source);
+            //GuitarPlayer player = new GuitarPlayer(source);
+            GuitarPlayer player = new GuitarPlayer(new java.io.File("C:\\Users\\28582\\Desktop\\temp\\yourname.mid"));
             player.play();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // You can also do this:
-        // GuitarPlayer player = new GuitarPlayer(new java.io.File("path/to/music.mid"));
+        //
         // player.play();
     }
 
