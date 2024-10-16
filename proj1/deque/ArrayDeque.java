@@ -29,7 +29,7 @@ public class ArrayDeque<T> implements Iterable<T> {
     private int last;
     public ArrayDeque() {
         items = (T[]) new Object[8];
-        size = 8;
+        size = 0;
         nextFirst = 0;
         nextLast = 1;
     }
