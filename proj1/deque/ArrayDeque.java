@@ -2,23 +2,22 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Deque<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private class ArrayDequeIterator implements Iterator<T> {
-        private int index;
+        private int pos;
         public ArrayDequeIterator() {
-             index = 0;
+             pos = 0;
         }
 
         @Override
         public boolean hasNext() {
-            return index < size;
+            return pos < size;
         }
 
         @Override
         public T next() {
-            int pos = (index + first) % capacity;
-            T returnItem = items[pos];
-            index += 1;
+            T returnItem = get(pos);
+            pos += 1;
             return returnItem;
         }
     }
@@ -27,56 +26,52 @@ public class ArrayDeque<T> implements Deque<T> {
     private int size;
     private int nextFirst;
     private int nextLast;
-    private int first;
-    private int last;
-    private int capacity = 0;
+
+    private static final int INITIAL_CAPACITY = 8;
     public ArrayDeque() {
-        capacity = 8;
-        items = (T[]) new Object[capacity];
+        items = (T[]) new Object[INITIAL_CAPACITY];
         size = 0;
         nextFirst = 0;
         nextLast = 1;
     }
 
+    private int arrayIndex(int i) {
+        return (nextFirst + 1 + i) % items.length;
+    }
+
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
+        int old_capacity = items.length;
         for (int i = 0; i < size; i += 1) {
             a[i] = get(i);
         }
         items = a;
-        first = 0;
-        last = size - 1;
         nextFirst = capacity - 1;
         nextLast = size;
-        this.capacity = capacity;
     }
 
     @Override
     public void addFirst(T item) {
-        if (size == 0) {
-            last = 0;
-        }
-        if (size == capacity) {
+        if (size == items.length) {
             resize(size * 2);
         }
         items[nextFirst] = item;
-        first = nextFirst;
+        if (nextFirst == 0) {
+            nextFirst = items.length - 1;
+        } else {
+            nextFirst -= 1;
+        }
         size += 1;
-        nextFirst = ((nextFirst - 1) % capacity + capacity) % capacity;
     }
 
     @Override
     public void addLast(T item) {
-        if (size == 0) {
-            first = 1;
-        }
-        if (size == capacity) {
+        if (size == items.length) {
             resize(size * 2);
         }
         items[nextLast] = item;
-        last = nextLast;
+        nextLast = (nextLast + 1) % items.length;
         size += 1;
-        nextLast = (nextLast + 1) % capacity;
     }
 
     @Override
@@ -86,40 +81,34 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T removeFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
-        if ((size < (capacity / 4) + 1) && (size >= 16)) {
-            resize(capacity / 4);
-        }
-        T returnItem = items[first];
-        items[first] = null;
-        nextFirst = first;
-        first = (first + 1) % capacity;
+        int frontIndex = arrayIndex(0);
+        T returnItem = get(0);
+        items[frontIndex] = null;
+        nextFirst = frontIndex;
         size -= 1;
         return returnItem;
     }
 
     @Override
     public T removeLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
-        if ((size < (capacity / 4) + 1) && (size >= 16)) {
-            resize(capacity / 4);
-        }
-        T returnItem = items[last];
-        items[last] = null;
-        nextLast = last;
-        last = ((last - 1) % capacity + capacity) % capacity;
+        int backIndex = arrayIndex(size() - 1);
+        T returnItem = get(size() - 1);
+        items[backIndex] = null;
+        nextLast = backIndex;
         size -= 1;
         return returnItem;
     }
 
     public void printDeque() {
-        for (int i = 0; i < size; i++) {
-            System.out.print(items[(i + first) % capacity] + " ");
-        }
+       for (T item : this) {
+           System.out.print(item + " ");
+       }
         System.out.println();
     }
 
@@ -128,8 +117,7 @@ public class ArrayDeque<T> implements Deque<T> {
         if (index < 0 || index >= size) {
             return null;
         }
-        int pos = (first + index) % capacity;
-        return items[pos];
+        return items[arrayIndex(index)];
     }
 
     public Iterator<T> iterator() {
@@ -139,11 +127,12 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public boolean equals(Object o) {
         if (this == o) { return true; }
-        if (o instanceof ArrayDeque) {
-            ArrayDeque ad = (ArrayDeque) o;
-            if (size != ad.size()) { return false; }
+
+        if (o instanceof Deque) {
+            Deque<T> dq = (Deque<T>) o;
+            if (size != dq.size()) { return false; }
             for (int i = 0; i < size; i++) {
-                if (get(i) != ad.get(i)) {
+                if (!get(i).equals(dq.get(i))) {
                     return false;
                 }
             }
@@ -151,6 +140,5 @@ public class ArrayDeque<T> implements Deque<T> {
         }
         return false;
     }
-
 
 }

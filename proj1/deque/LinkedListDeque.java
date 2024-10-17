@@ -3,7 +3,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<T> implements Deque<T> {
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T>{
     private class Node {
         public T item;
         public Node next;
@@ -132,11 +132,11 @@ public class LinkedListDeque<T> implements Deque<T> {
     public boolean equals(Object o) {
         if (this == o) { return true; }
 
-        if (o instanceof LinkedListDeque) {
-            LinkedListDeque lld = (LinkedListDeque) o;
-            if (size != lld.size()) { return false; }
+        if (o instanceof Deque) {
+            Deque<T> dq = (Deque<T>) o;
+            if (size != dq.size()) { return false; }
             for (int i = 0; i < size; i++) {
-                if (get(i) != lld.get(i)) {
+                if (!get(i).equals(dq.get(i))) {
                     return false;
                 }
             }
