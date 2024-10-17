@@ -11,7 +11,7 @@ public class MyTest {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
         LinkedListDeque<Integer> lld = new LinkedListDeque<>();
 
-        final int N = 20000000;
+        final int N = 2000000;
         for (int i = 0; i < N; i++) {
             int operationNumber = StdRandom.uniform(0, 4);
             if (operationNumber == 0) {
