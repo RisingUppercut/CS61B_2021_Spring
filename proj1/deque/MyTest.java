@@ -4,14 +4,14 @@ import static org.junit.Assert.*;
 import edu.princeton.cs.algs4.StdRandom;
 
 
-public class myTest {
+public class MyTest {
 
     @Test
     public void randomizedTest() {
         ArrayDeque<Integer> ad = new ArrayDeque<>();
         LinkedListDeque<Integer> lld = new LinkedListDeque<>();
 
-        int N = 20000000;
+        final int N = 20000000;
         for (int i = 0; i < N; i++) {
             int operationNumber = StdRandom.uniform(0, 4);
             if (operationNumber == 0) {
@@ -28,7 +28,7 @@ public class myTest {
                     continue;
                 }
                 assertEquals(ad.removeFirst(), lld.removeFirst());
-            } if (operationNumber == 3) {
+            } else {
                 int ranVal = StdRandom.uniform(0, 434334);
                 ad.addLast(ranVal);
                 lld.addLast(ranVal);
