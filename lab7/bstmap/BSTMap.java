@@ -48,9 +48,11 @@ public class BSTMap<K extends  Comparable<K>, V> implements  Map61B<K, V>{
                 lookUp.val = value;
             } else {
                 put(root, key, value);
+                size += 1;
             }
         } else {
             root = new BSTNode(key, value, null , null);
+            size += 1;
         }
     }
 
@@ -91,20 +93,20 @@ public class BSTMap<K extends  Comparable<K>, V> implements  Map61B<K, V>{
         throw new UnsupportedOperationException();
     }
 
-    public void printInorder() {
-        printInorder(root);
+    public void printInOrder() {
+        printInOrder(root);
     }
 
-    private void printInorder(BSTNode p) {
+    private void printInOrder(BSTNode p) {
         if (p == null) {
             return;
         }
         if (p.leftChild == null) {
             System.out.print(p.key + " ");
         }
-        printInorder(p.leftChild);
+        printInOrder(p.leftChild);
         System.out.print(p.key + " ");
-        printInorder(p.rightChild);
+        printInOrder(p.rightChild);
     }
 
     private class BSTNode {
